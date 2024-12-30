@@ -1,7 +1,5 @@
 // To generate a random color
-let StartChangingColor;
-let StopChangingColor;
-
+let changeBgColor
 const randomColor = function(){
     let hex = '0123456789ABCDEF'
     let color = '#'
@@ -11,14 +9,22 @@ const randomColor = function(){
     return color
 }
 
-StartChangingColor = function(){
-    document.body.style.backgroundColor = randomColor()
+let intervalId;
+
+const StartChangingColor = function () {
+    if(!intervalId){
+        intervalId = setInterval(changeBgColor,1000)
+    }
+    function changeBgColor() {
+        document.body.style.backgroundColor = randomColor()
+    }
 }
 
-document.getElementById('start').addEventListener('click', function(){
-    StopChangingColor = setInterval(StartChangingColor,1000)
-})
+const StopChangingColor = function(){
+    clearInterval(intervalId)
+    intervalId = (null)
+}
 
-document.getElementById('stop').addEventListener('click', function() {
-    clearInterval(StopChangingColor)
-})
+document.getElementById('start').addEventListener('click', StartChangingColor) 
+
+document.getElementById('stop').addEventListener('click', StopChangingColor)
